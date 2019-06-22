@@ -4,7 +4,7 @@
 #
 Name     : tesseract
 Version  : 4.0.0
-Release  : 1
+Release  : 2
 URL      : https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz
 Source0  : https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz
 Summary  : An OCR program
