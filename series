@@ -1,1 +1,2 @@
 0001-Do-not-use-native.patch
+0002-Make-tesseract.pc-depend-on-libarchive-libcurl-.pc.patch

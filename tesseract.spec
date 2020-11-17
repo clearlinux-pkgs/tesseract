@@ -4,7 +4,7 @@
 #
 Name     : tesseract
 Version  : 4.1.1
-Release  : 4
+Release  : 5
 URL      : https://github.com/tesseract-ocr/tesseract/archive/4.1.1/tesseract-4.1.1.tar.gz
 Source0  : https://github.com/tesseract-ocr/tesseract/archive/4.1.1/tesseract-4.1.1.tar.gz
 Summary  : An OCR Engine that was developed at HP Labs between 1985 and 1995... and now at Google.
@@ -31,6 +31,7 @@ BuildRequires : pkgconfig(libcurl)
 BuildRequires : pkgconfig(pango)
 BuildRequires : tiff-dev
 Patch1: 0001-Do-not-use-native.patch
+Patch2: 0002-Make-tesseract.pc-depend-on-libarchive-libcurl-.pc.patch
 
 %description
 # Tesseract OCR
@@ -95,13 +96,14 @@ license components for the tesseract package.
 %setup -q -n tesseract-4.1.1
 cd %{_builddir}/tesseract-4.1.1
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605245099
+export SOURCE_DATE_EPOCH=1605640913
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -114,7 +116,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1605245099
+export SOURCE_DATE_EPOCH=1605640913
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tesseract
 cp %{_builddir}/tesseract-4.1.1/LICENSE %{buildroot}/usr/share/package-licenses/tesseract/2b8b815229aa8a61e483fb4ba0588b8b6c491890

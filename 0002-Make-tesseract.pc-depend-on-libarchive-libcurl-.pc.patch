@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Tue, 17 Nov 2020 19:12:43 +0000
+Subject: [PATCH] Make tesseract.pc depend on {libarchive,libcurl}.pc
+
+Because LIBS now adds `-larchive` and `-lcurl` for linking, Requires
+should be declared for `libarchive` and `libcurl` so that tesseract-dev
+will include the proper `pkgconfig(...)` runtime dependencies.
+
+Upstream-Status: Inappropriate
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ tesseract.pc.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tesseract.pc.in b/tesseract.pc.in
+index f907f07..e2fc230 100644
+--- a/tesseract.pc.in
++++ b/tesseract.pc.in
+@@ -11,6 +11,7 @@ Description: An OCR Engine that was developed at HP Labs between 1985 and 1995..
+ URL: https://github.com/tesseract-ocr/tesseract
+ Version: @VERSION@
+ Requires.private: lept
++Requires: libarchive libcurl
+ Libs: -L${libdir} -ltesseract @libarchive_LIBS@ @libcurl_LIBS@ @TENSORFLOW_LIBS@
+ Libs.private: -lpthread @OPENCL_LDFLAGS@
+ Cflags: -I${includedir}
