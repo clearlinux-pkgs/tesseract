@@ -4,7 +4,7 @@
 #
 Name     : tesseract
 Version  : 4.1.1
-Release  : 5
+Release  : 6
 URL      : https://github.com/tesseract-ocr/tesseract/archive/4.1.1/tesseract-4.1.1.tar.gz
 Source0  : https://github.com/tesseract-ocr/tesseract/archive/4.1.1/tesseract-4.1.1.tar.gz
 Summary  : An OCR Engine that was developed at HP Labs between 1985 and 1995... and now at Google.
