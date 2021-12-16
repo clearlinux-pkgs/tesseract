@@ -1,7 +1,4 @@
-Configure miss: whether C++ compiler accepts -Werror=unused-command-line-argument
-Configure miss: tensorflow/core/framework/graph.pb.h usability
-Configure miss: tensorflow/core/framework/graph.pb.h presence
-Configure miss: tensorflow/core/framework/graph.pb.h
+Configure miss: g++ option to enable C++11 features
 Configure miss: if compiling with clang
-Configure miss: stdbool.h that conforms to C99
-Configure miss: _Bool
+Configure miss: tensorflow/core/framework/graph.pb.h
+Configure miss: whether C++ compiler accepts -Werror=unused-command-line-argument
