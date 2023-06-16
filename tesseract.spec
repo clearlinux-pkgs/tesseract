@@ -5,7 +5,7 @@
 #
 Name     : tesseract
 Version  : 5.3.1
-Release  : 9
+Release  : 10
 URL      : https://github.com/tesseract-ocr/tesseract/archive/5.3.1/tesseract-5.3.1.tar.gz
 Source0  : https://github.com/tesseract-ocr/tesseract/archive/5.3.1/tesseract-5.3.1.tar.gz
 Summary  : An OCR Engine that was developed at HP Labs between 1985 and 1995... and now at Google.
@@ -92,37 +92,54 @@ license components for the tesseract package.
 %prep
 %setup -q -n tesseract-5.3.1
 cd %{_builddir}/tesseract-5.3.1
-%patch1 -p1
+%patch -P 1 -p1
+pushd ..
+cp -a tesseract-5.3.1 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680727830
+export SOURCE_DATE_EPOCH=1686875344
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 %autogen --disable-static
 make  %{?_smp_mflags}
 
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+%autogen --disable-static
+make  %{?_smp_mflags}
+popd
 %install
-export SOURCE_DATE_EPOCH=1680727830
+export SOURCE_DATE_EPOCH=1686875344
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tesseract
 cp %{_builddir}/tesseract-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/tesseract/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
+pushd ../buildavx2/
+%make_install_v3
+popd
 %make_install
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/tesseract
 /usr/bin/tesseract
 
 %files data
@@ -179,6 +196,7 @@ cp %{_builddir}/tesseract-%{version}/LICENSE %{buildroot}/usr/share/package-lice
 
 %files lib
 %defattr(-,root,root,-)
+/V3/usr/lib64/libtesseract.so.5.0.3
 /usr/lib64/libtesseract.so.5
 /usr/lib64/libtesseract.so.5.0.3
 
