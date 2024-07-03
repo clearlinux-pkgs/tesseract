@@ -7,7 +7,7 @@
 #
 Name     : tesseract
 Version  : 5.4.1
-Release  : 11
+Release  : 12
 URL      : https://github.com/tesseract-ocr/tesseract/archive/5.4.1/tesseract-5.4.1.tar.gz
 Source0  : https://github.com/tesseract-ocr/tesseract/archive/5.4.1/tesseract-5.4.1.tar.gz
 Summary  : An OCR Engine that was developed at HP Labs between 1985 and 1995... and now at Google.
@@ -113,7 +113,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1720022801
+export SOURCE_DATE_EPOCH=1720025365
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -131,7 +131,8 @@ FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 export GOAMD64=v2
-%cmake ..   -G 'Unix Makefiles'
+%cmake .. -DBUILD_TRAINING_TOOLS=0 \
+-DBUILD_SHARED_LIBS=1  -G 'Unix Makefiles'
 make  %{?_smp_mflags}
 popd
 pushd ../buildavx2/
@@ -156,7 +157,8 @@ CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 CXXFLAGS="$CLEAR_INTERMEDIATE_CXXFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS -march=x86-64-v3 "
-%cmake ..   -G 'Unix Makefiles'
+%cmake .. -DBUILD_TRAINING_TOOLS=0 \
+-DBUILD_SHARED_LIBS=1  -G 'Unix Makefiles'
 make  %{?_smp_mflags}
 popd
 popd
@@ -176,7 +178,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1720022801
+export SOURCE_DATE_EPOCH=1720025365
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tesseract
 cp %{_builddir}/tesseract-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/tesseract/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
@@ -198,38 +200,8 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/V3/usr/bin/ambiguous_words
-/V3/usr/bin/classifier_tester
-/V3/usr/bin/cntraining
-/V3/usr/bin/combine_lang_model
-/V3/usr/bin/combine_tessdata
-/V3/usr/bin/dawg2wordlist
-/V3/usr/bin/lstmeval
-/V3/usr/bin/lstmtraining
-/V3/usr/bin/merge_unicharsets
-/V3/usr/bin/mftraining
-/V3/usr/bin/set_unicharset_properties
-/V3/usr/bin/shapeclustering
 /V3/usr/bin/tesseract
-/V3/usr/bin/text2image
-/V3/usr/bin/unicharset_extractor
-/V3/usr/bin/wordlist2dawg
-/usr/bin/ambiguous_words
-/usr/bin/classifier_tester
-/usr/bin/cntraining
-/usr/bin/combine_lang_model
-/usr/bin/combine_tessdata
-/usr/bin/dawg2wordlist
-/usr/bin/lstmeval
-/usr/bin/lstmtraining
-/usr/bin/merge_unicharsets
-/usr/bin/mftraining
-/usr/bin/set_unicharset_properties
-/usr/bin/shapeclustering
 /usr/bin/tesseract
-/usr/bin/text2image
-/usr/bin/unicharset_extractor
-/usr/bin/wordlist2dawg
 
 %files data
 %defattr(-,root,root,-)
@@ -269,8 +241,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libcommon_training.so
-/V3/usr/lib64/libunicharset_training.so
 /usr/include/tesseract/baseapi.h
 /usr/include/tesseract/capi.h
 /usr/include/tesseract/export.h
@@ -287,9 +257,7 @@ popd
 /usr/lib64/cmake/tesseract/TesseractConfigVersion.cmake
 /usr/lib64/cmake/tesseract/TesseractTargets-relwithdebinfo.cmake
 /usr/lib64/cmake/tesseract/TesseractTargets.cmake
-/usr/lib64/libcommon_training.so
 /usr/lib64/libtesseract.so
-/usr/lib64/libunicharset_training.so
 /usr/lib64/pkgconfig/tesseract.pc
 
 %files lib
