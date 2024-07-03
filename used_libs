@@ -2,7 +2,8 @@ libarchive.so.13
 libc.so.6
 libcurl.so.4
 libgcc_s.so.1
-libgomp.so.1
+libicui18n.so.73
+libicuuc.so.73
 libleptonica.so.6
 libm.so.6
 libstdc++.so.6
